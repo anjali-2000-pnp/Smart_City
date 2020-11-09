@@ -147,7 +147,7 @@ public class MainFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getActivity(),"No Internet Connection",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getActivity(),"No Internet Connection",Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -208,7 +208,7 @@ public class MainFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getActivity(),"No Internet Connection",Toast.LENGTH_LONG).show();
+                      //  Toast.makeText(getActivity(),"No Internet Connection",Toast.LENGTH_LONG).show();
                     }
                 });
 

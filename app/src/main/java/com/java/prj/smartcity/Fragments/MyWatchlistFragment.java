@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.java.prj.smartcity.HelperClasses.AppConstants;
 import com.java.prj.smartcity.HelperClasses.HttpHandler;
@@ -55,18 +56,18 @@ public class MyWatchlistFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_project_type1, container, false);
 
-        //Toast.makeText(getActivity(),"HERE",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(),"HERE",Toast.LENGTH_SHORT).show();
         items=new ArrayList<ProjectType1Item>();
 
-        recyclerView=(RecyclerView)view.findViewById(R.id.fragment_project_type1_recyclerview);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        //recyclerView=(RecyclerView)view.findViewById(R.id.fragment_project_type1_recyclerview);
+        //recyclerView.setHasFixedSize(true);
+        //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         new MyWatchlistFragment.GetProjectList().execute();
         filter_fab=(FloatingActionButton)view.findViewById(R.id.fragment_project_type1_filter_fab);
 
         filter_fab.setVisibility(View.GONE);
 
-        /*
+
         filter_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,7 +119,7 @@ public class MyWatchlistFragment extends Fragment {
                 });
             }
         });
-            */
+
         return view;
     }
 
@@ -143,23 +144,23 @@ public class MyWatchlistFragment extends Fragment {
                 items.clear();
                 JSONObject jsonObject = null;
                 try {
-                    jsonObject = new JSONObject(s);
-                    JSONArray result = jsonObject.getJSONArray("result");
+               //     jsonObject = new JSONObject(s);
+                 //   JSONArray result = jsonObject.getJSONArray("result");
 
-                    for (int i = 0; i < result.length(); i++) {
-                        JSONObject jo = result.getJSONObject(i);
-                        String project_id = jo.getString("project_id");
-                        String title = jo.getString("title");
-                        String description = jo.getString("description");
-                        String department = jo.getString("department");
-                        String city = jo.getString("city");
-                        String image = jo.getString("image");
+                   // for (int i = 0; i < result.length(); i++) {
+                     //   JSONObject jo = result.getJSONObject(i);
+                       // String project_id = jo.getString("project_id");
+                        //String title = jo.getString("title");
+                        //String description = jo.getString("description");
+                        //String department = jo.getString("department");
+                        //String city = jo.getString("city");
+                        //String image = jo.getString("image");
 
-                        items.add(new ProjectType1Item(project_id,title,description,department,city,image));
-                    }
-                    recyclerView.setAdapter(new ProjectType1RecyclerAdapter(items,getActivity()));
+                       // items.add(new ProjectType1Item(project_id,title,description,department,city,image));
+                  //  }
+                  //  recyclerView.setAdapter(new ProjectType1RecyclerAdapter(items,getActivity()));
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -184,33 +185,35 @@ public class MyWatchlistFragment extends Fragment {
                 return s;
             }
         }
-        GetJSON2 gj = new GetJSON2();
-        gj.execute();
+       // GetJSON2 gj = new GetJSON2();
+        //gj.execute();
     }
 
 
     private void readProjectData(String JSON_NEWS_STRING){
         JSONObject jsonObject = null;
         try {
-            jsonObject = new JSONObject(JSON_NEWS_STRING);
-            JSONArray result = jsonObject.getJSONArray("result");
+           // jsonObject = new JSONObject(JSON_NEWS_STRING);
+            //JSONArray result = jsonObject.getJSONArray("result");
 
-            for (int i = 0; i < result.length(); i++) {
-                JSONObject jo = result.getJSONObject(i);
-                String project_id = jo.getString("project_id");
-                String title = jo.getString("title");
-                String description = jo.getString("description");
-                String department = jo.getString("department");
-                String city = jo.getString("city");
-                String image = jo.getString("image");
+            //for (int i = 0; i < result.length(); i++) {
+              //  JSONObject jo = result.getJSONObject(i);
+                //String project_id = jo.getString("project_id");
+                //String title = jo.getString("title");
+                //String description = jo.getString("description");
+                //String department = jo.getString("department");
+                //String city = jo.getString("city");
+                //String image = jo.getString("image");
 
-                items.add(new ProjectType1Item(project_id,title,description,department,city,image));
-            }
-            recyclerView.setAdapter(new ProjectType1RecyclerAdapter(items,getActivity()));
+                //items.add(new ProjectType1Item(project_id,title,description,department,city,image));
+            //}
+            //recyclerView.setAdapter(new ProjectType1RecyclerAdapter(items,getActivity()));
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
+
 
     }
 
@@ -232,30 +235,30 @@ public class MyWatchlistFragment extends Fragment {
 
             HttpHandler sh = new HttpHandler();
 
-            String jsonStr = sh.makeServiceCall(AppConstants.get_type1_projects);
+          //  String jsonStr = sh.makeServiceCall(AppConstants.get_type1_projects);
 
-            if (jsonStr != null) {
+          //  if (jsonStr != null) {
                 try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
+                  //  JSONObject jsonObj = new JSONObject(jsonStr);
 
-                    JSONArray feeds = jsonObj.getJSONArray("result");
+                   // JSONArray feeds = jsonObj.getJSONArray("result");
 
-                    for (int i = 0; i < feeds.length(); i++) {
-                        JSONObject c = feeds.getJSONObject(i);
+                  //  for (int i = 0; i < feeds.length(); i++) {
+                     //   JSONObject c = feeds.getJSONObject(i);
 
-                        String project_id = c.getString("project_id");
-                        String title = c.getString("title");
-                        String description = c.getString("description");
-                        String department = c.getString("department");
-                        String city = c.getString("city");
-                        String img_url = c.getString("image");
+                     //   String project_id = c.getString("project_id");
+                       // String title = c.getString("title");
+                     //   String description = c.getString("description");
+                       // String department = c.getString("department");
+                       // String city = c.getString("city");
+                        //String img_url = c.getString("image");
 
-                        ProjectType1Item object = new ProjectType1Item(project_id,title,description,department,city,img_url);
+                       // ProjectType1Item object = new ProjectType1Item(project_id,title,description,department,city,img_url);
 
-                        items.add(object);
-                    }
+                        //items.add(object);
+                   // }
 
-                } catch (final JSONException e) {
+                } catch (Exception e) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -264,15 +267,15 @@ public class MyWatchlistFragment extends Fragment {
                     });
 
                 }
-            } else {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getActivity(),"No Internet Connection",Toast.LENGTH_LONG).show();
-                    }
-                });
+            //} else {
+                //getActivity().runOnUiThread(new Runnable() {
+                  //  @Override
+                    //public void run() {
+                      //  Toast.makeText(getActivity(),"No Internet Connection",Toast.LENGTH_LONG).show();
+                   // }
+                //});
 
-            }
+           // }
             return null;
         }
 

@@ -1,6 +1,7 @@
 package com.java.prj.smartcity.Fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,10 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -20,13 +24,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.java.prj.smartcity.HelperClasses.AppConstants;
 import com.java.prj.smartcity.HelperClasses.HttpHandler;
 import com.java.prj.smartcity.HelperClasses.RequestHandler;
+import com.java.prj.smartcity.IntroActivity;
 import com.java.prj.smartcity.Items.ProjectType1Item;
+import com.java.prj.smartcity.Items.ProjectType1NewsItem;
+import com.java.prj.smartcity.ProjectType1DetailsActivity;
 import com.java.prj.smartcity.R;
 import com.java.prj.smartcity.RecyclerAdapter.ProjectType1RecyclerAdapter;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.java.prj.smartcity.WelcomeActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,18 +44,21 @@ import java.util.HashMap;
 public class ProjectType1Fragment extends Fragment {
 
 
-
-
     public ProjectType1Fragment() {
         // Required empty public constructor
     }
+
+    TextView department_textview, title_textview;
+    ImageView project_imageview;
+    CardView cardView;
+    TextView projectid_textview;
 
     RecyclerView recyclerView;
     ArrayList<ProjectType1Item> items;
     ProgressDialog progressDialog;
     FloatingActionButton filter_fab;
-    CheckBox check1,check2,check3,check4,check5;
-    Button filter_button;
+    CheckBox check1, check2, check3, check4, check5;
+    Button filter_button, next;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,14 +66,28 @@ public class ProjectType1Fragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_project_type1, container, false);
 
-        Toast.makeText(getActivity(),"HERE",Toast.LENGTH_SHORT).show();
-        items=new ArrayList<ProjectType1Item>();
+        Toast.makeText(getActivity(), "HERE", Toast.LENGTH_SHORT).show();
+        items = new ArrayList<ProjectType1Item>();
 
-        recyclerView=(RecyclerView)view.findViewById(R.id.fragment_project_type1_recyclerview);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        new GetProjectList().execute();
-        filter_fab=(FloatingActionButton)view.findViewById(R.id.fragment_project_type1_filter_fab);
+        department_textview = view.findViewById(R.id.project_type1_item_departmenttext);
+        projectid_textview = view.findViewById(R.id.project_type1_item_id_text);
+        title_textview = view.findViewById(R.id.project_type1_item_titletext);
+        project_imageview = view.findViewById(R.id.project_type1_item_image);
+        cardView = view.findViewById(R.id.project_type1_item_cardview);
+        next = (Button) view.findViewById(R.id.btnNext);
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity().getApplication(), ProjectType1DetailsActivity.class);
+                startActivity(i);
+            }
+        });
+        //  recyclerView=(RecyclerView)view.findViewById(R.id.fragment_project_type1_recyclerview);
+        // recyclerView.setHasFixedSize(true);
+        //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+      //  new GetProjectList().execute();
+        filter_fab = (FloatingActionButton) view.findViewById(R.id.fragment_project_type1_filter_fab);
 
         filter_fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,42 +98,37 @@ public class ProjectType1Fragment extends Fragment {
                 dialog.setContentView(bottomSheetView);
                 dialog.show();
 
-                check1=(CheckBox)bottomSheetView.findViewById(R.id.bottom_sheet_filter_check1);
-                check2=(CheckBox)bottomSheetView.findViewById(R.id.bottom_sheet_filter_check2);
-                check3=(CheckBox)bottomSheetView.findViewById(R.id.bottom_sheet_filter_check3);
-                check4=(CheckBox)bottomSheetView.findViewById(R.id.bottom_sheet_filter_check4);
-                check5=(CheckBox)bottomSheetView.findViewById(R.id.bottom_sheet_filter_check5);
+                check1 = (CheckBox) bottomSheetView.findViewById(R.id.bottom_sheet_filter_check1);
+                check2 = (CheckBox) bottomSheetView.findViewById(R.id.bottom_sheet_filter_check2);
+                check3 = (CheckBox) bottomSheetView.findViewById(R.id.bottom_sheet_filter_check3);
+                check4 = (CheckBox) bottomSheetView.findViewById(R.id.bottom_sheet_filter_check4);
+                check5 = (CheckBox) bottomSheetView.findViewById(R.id.bottom_sheet_filter_check5);
 
-                filter_button=(Button)bottomSheetView.findViewById(R.id.bottom_sheet_filter_apply_btn);
+                filter_button = (Button) bottomSheetView.findViewById(R.id.bottom_sheet_filter_apply_btn);
 
                 filter_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(getActivity(), "CLick", Toast.LENGTH_SHORT).show();
 
-                        int c1=0,c2=0,c3=0,c4=0,c5=0;
-                        if (check1.isChecked())
-                        {
-                            c1=1;
+                        int c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0;
+                        if (check1.isChecked()) {
+                            c1 = 1;
                         }
-                        if (check2.isChecked())
-                        {
-                            c2=1;
+                        if (check2.isChecked()) {
+                            c2 = 1;
                         }
-                        if (check3.isChecked())
-                        {
-                            c3=1;
+                        if (check3.isChecked()) {
+                            c3 = 1;
                         }
-                        if (check4.isChecked())
-                        {
+                        if (check4.isChecked()) {
                             c4 = 1;
                         }
-                        if (check5.isChecked())
-                        {
-                            c5=1;
+                        if (check5.isChecked()) {
+                            c5 = 1;
                         }
                         dialog.dismiss();
-                        getCategorizedData(c1,c2,c3,c4,c5);
+                        getCategorizedData(c1, c2, c3, c4, c5);
 
 
                     }
@@ -122,15 +139,14 @@ public class ProjectType1Fragment extends Fragment {
         return view;
     }
 
-    private void getCategorizedData(final int check1,final int check2,final int check3,final int check4,final int check5)
-    {
-        class GetJSON2 extends AsyncTask<Void,Void,String>
-        {
+
+    private void getCategorizedData(final int check1, final int check2, final int check3, final int check4, final int check5) {
+        class GetJSON2 extends AsyncTask<Void, Void, String> {
 
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                progressDialog=new ProgressDialog(getActivity());
+                progressDialog = new ProgressDialog(getActivity());
                 progressDialog.setMessage("Fetching data");
                 progressDialog.setCancelable(false);
                 progressDialog.show();
@@ -139,48 +155,47 @@ public class ProjectType1Fragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                Log.v("STRING",s);
+                Log.v("STRING", s);
                 items.clear();
-                JSONObject jsonObject = null;
+                //   JSONObject jsonObject = null;
                 try {
-                    jsonObject = new JSONObject(s);
-                    JSONArray result = jsonObject.getJSONArray("result");
+                    //     jsonObject = new JSONObject(s);
+                    //   JSONArray result = jsonObject.getJSONArray("result");
 
-                    for (int i = 0; i < result.length(); i++) {
-                        JSONObject jo = result.getJSONObject(i);
-                        String project_id = jo.getString("project_id");
-                        String title = jo.getString("title");
-                        String description = jo.getString("description");
-                        String department = jo.getString("department");
-                        String city = jo.getString("city");
-                        String image = "https://codebloodedinnovators.000webhostapp.com/SmartCityApp/mygov_projects.png";
+                    // for (int i = 0; i < result.length(); i++) {
+                    //   JSONObject jo = result.getJSONObject(i);
+                    // String project_id = jo.getString("project_id");
+                    //String title = jo.getString("title");
+                    //String description = jo.getString("description");
+                    //String department = jo.getString("department");
+                    //String city = jo.getString("city");
+                    //String image = "https://codebloodedinnovators.000webhostapp.com/SmartCityApp/mygov_projects.png";
 
-                        items.add(new ProjectType1Item(project_id,title,description,department,city,image));
-                    }
-                    recyclerView.setAdapter(new ProjectType1RecyclerAdapter(items,getActivity()));
+                    //  items.add(new ProjectType1Item(project_id,title,description,department,city,image));
+                    //  }
+                    //recyclerView.setAdapter(new ProjectType1RecyclerAdapter(items,getActivity()));
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-                if (progressDialog.isShowing())
-                {
+                if (progressDialog.isShowing()) {
                     progressDialog.hide();
                 }
             }
 
             @Override
             protected String doInBackground(Void... params) {
-                HashMap<String,String> args = new HashMap<>();
-                args.put("check1",String.valueOf(check1));
-                args.put("check2",String.valueOf(check2));
-                args.put("check3",String.valueOf(check3));
-                args.put("check4",String.valueOf(check4));
-                args.put("check5",String.valueOf(check5));
+                HashMap<String, String> args = new HashMap<>();
+                args.put("check1", String.valueOf(check1));
+                args.put("check2", String.valueOf(check2));
+                args.put("check3", String.valueOf(check3));
+                args.put("check4", String.valueOf(check4));
+                args.put("check5", String.valueOf(check5));
 
                 RequestHandler rh = new RequestHandler();
 
-                String s = rh.sendPostRequest(AppConstants.get_type1_projects_categorized,args);
+                String s = rh.sendPostRequest(AppConstants.get_type1_projects_categorized, args);
                 return s;
             }
         }
@@ -189,32 +204,33 @@ public class ProjectType1Fragment extends Fragment {
     }
 
 
-    private void readProjectData(String JSON_NEWS_STRING){
-        JSONObject jsonObject = null;
+    private void readProjectData(String JSON_NEWS_STRING) {
+        //JSONObject jsonObject = null;
         try {
-            jsonObject = new JSONObject(JSON_NEWS_STRING);
-            JSONArray result = jsonObject.getJSONArray("result");
+            //  jsonObject = new JSONObject(JSON_NEWS_STRING);
+            //JSONArray result = jsonObject.getJSONArray("result");
 
-            for (int i = 0; i < result.length(); i++) {
-                JSONObject jo = result.getJSONObject(i);
-                String project_id = jo.getString("project_id");
-                String title = jo.getString("title");
-                String description = jo.getString("description");
-                String department = jo.getString("department");
-                String city = jo.getString("city");
-                String image = "https://codebloodedinnovators.000webhostapp.com/SmartCityApp/mygov_projects.png";
+            //for (int i = 0; i < result.length(); i++) {
+            //  JSONObject jo = result.getJSONObject(i);
+            //String project_id = jo.getString("project_id");
+            //String title = jo.getString("title");
+            //String description = jo.getString("description");
+            //String department = jo.getString("department");
+            // String city = jo.getString("city");
+            //String image = "https://codebloodedinnovators.000webhostapp.com/SmartCityApp/mygov_projects.png";
 
-                items.add(new ProjectType1Item(project_id,title,description,department,city,image));
-            }
-            recyclerView.setAdapter(new ProjectType1RecyclerAdapter(items,getActivity()));
+            //   items.add(new ProjectType1Item(project_id,title,description,department,city,image));
+            //  }
+            //recyclerView.setAdapter(new ProjectType1RecyclerAdapter(items,getActivity()));
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+}
 
-    private class GetProjectList extends AsyncTask<Void,Void,Void>
+  /*  private class GetProjectList extends AsyncTask<Void,Void,Void>
     {
 
         @Override
@@ -232,30 +248,30 @@ public class ProjectType1Fragment extends Fragment {
 
             HttpHandler sh = new HttpHandler();
 
-            String jsonStr = sh.makeServiceCall(AppConstants.get_type1_projects);
+          //  String jsonStr = sh.makeServiceCall(AppConstants.get_type1_projects);
 
-            if (jsonStr != null) {
+            //if (jsonStr != null) {
                 try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
+              //      JSONObject jsonObj = new JSONObject(jsonStr);
 
-                    JSONArray feeds = jsonObj.getJSONArray("result");
+                //    JSONArray feeds = jsonObj.getJSONArray("result");
 
-                    for (int i = 0; i < feeds.length(); i++) {
-                        JSONObject c = feeds.getJSONObject(i);
+                  //  for (int i = 0; i < feeds.length(); i++) {
+                    //    JSONObject c = feeds.getJSONObject(i);
 
-                        String project_id = c.getString("project_id");
-                        String title = c.getString("title");
-                        String description = c.getString("description");
-                        String department = c.getString("department");
-                        String city = c.getString("city");
-                        String img_url = "https://codebloodedinnovators.000webhostapp.com/SmartCityApp/mygov_projects.png";
+                      //  String project_id = c.getString("project_id");
+                        //String title = c.getString("title");
+                        //String description = c.getString("description");
+                        //String department = c.getString("department");
+                     //   String city = c.getString("city");
+                       // String img_url = "https://codebloodedinnovators.000webhostapp.com/SmartCityApp/mygov_projects.png";
 
-                        ProjectType1Item object = new ProjectType1Item(project_id,title,description,department,city,img_url);
+                      //  ProjectType1Item object = new ProjectType1Item(project_id,title,description,department,city,img_url);
 
-                        items.add(object);
-                    }
+                        //items.add(object);
+                    //}
 
-                } catch (final JSONException e) {
+                } catch (Exception e) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -264,17 +280,19 @@ public class ProjectType1Fragment extends Fragment {
                     });
 
                 }
-            } else {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getActivity(),"No Internet Connection",Toast.LENGTH_LONG).show();
-                    }
-                });
+           // } else {
+             //   getActivity().runOnUiThread(new Runnable() {
+               //     @Override
+                 //   public void run() {
+                   //     Toast.makeText(getActivity(),"No Internet Connection",Toast.LENGTH_LONG).show();
+                    //}
+                //});
 
-            }
+            //}
             return null;
         }
+
+
 
         @Override
         protected void onPostExecute(Void aVoid) {
@@ -284,8 +302,11 @@ public class ProjectType1Fragment extends Fragment {
             {
                 progressDialog.hide();
             }
-            recyclerView.setAdapter(new ProjectType1RecyclerAdapter(items,getActivity()));
+           // recyclerView.setAdapter(new ProjectType1RecyclerAdapter(items,getActivity()));
         }
     }
 }
+
+
+   */
 

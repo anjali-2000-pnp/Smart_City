@@ -50,9 +50,13 @@ public class IntroActivity extends OnboarderActivity {
         }
         else
         {
-
-            Intent intent=new Intent(this,LoginActivity.class);
-            startActivity(intent);
+            SharedPreferences sharedPreferences = IntroActivity.this.getSharedPreferences("user", MODE_PRIVATE);
+            if(sharedPreferences.getBoolean("logged", false))
+                startActivity(new Intent(IntroActivity.this, MainActivity.class));
+            else {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            }
         }
 
 

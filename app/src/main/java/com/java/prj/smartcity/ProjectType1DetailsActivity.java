@@ -3,6 +3,8 @@ package com.java.prj.smartcity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
@@ -33,14 +35,15 @@ import java.util.Scanner;
 
 public class ProjectType1DetailsActivity extends AppCompatActivity {
 
-    TextView title,description,department,city;
-    TextView viewed_num,interested_num,submit_num;
+    TextView title, description, department, city;
+    TextView viewed_num, interested_num, submit_num;
     ImageView imageView;
     Button submit_btn;
     ListView news_listView;
     CardView newCard;
     ArrayList<ProjectType1NewsItem> newsItemArrayList;
-    String JSON_NEWS_STRING="";
+    String JSON_NEWS_STRING = "";
+    private String s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,59 +53,55 @@ public class ProjectType1DetailsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        viewed_num = (TextView)findViewById(R.id.details_project_type1_num_viewed);
-        interested_num = (TextView)findViewById(R.id.details_project_type1_num_interested);
+        viewed_num = (TextView) findViewById(R.id.details_project_type1_num_viewed);
+        interested_num = (TextView) findViewById(R.id.details_project_type1_num_interested);
         submit_num = (TextView) findViewById(R.id.details_project_type1_num_submitted);
 
-        getStatistics(getIntent().getStringExtra("Project_id"));
-        insertViewed(getIntent().getStringExtra("Project_id"));
+       // getStatistics(getIntent().getStringExtra("Project_id"));
+       // insertViewed(getIntent().getStringExtra("Project_id"));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertSubmission_Interested(getIntent().getStringExtra("Project_id"),0);
+                insertSubmission_Interested(getIntent().getStringExtra("Project_id"), 0);
             }
         });
 
-        imageView=(ImageView)findViewById(R.id.details_project_type1_image);
-        title=(TextView)findViewById(R.id.details_project_type1_title);
-        description=(TextView)findViewById(R.id.details_project_type1_description);
-        department=(TextView)findViewById(R.id.details_project_type1_department);
-        city=(TextView)findViewById(R.id.details_project_type1_city);
+        imageView = (ImageView) findViewById(R.id.details_project_type1_image);
+        title = (TextView) findViewById(R.id.details_project_type1_title);
+        description = (TextView) findViewById(R.id.details_project_type1_description);
+        department = (TextView) findViewById(R.id.details_project_type1_department);
+        city = (TextView) findViewById(R.id.details_project_type1_city);
 
-        submit_btn=(Button)findViewById(R.id.details_project_type1_submit_btn);
+        submit_btn = (Button) findViewById(R.id.details_project_type1_submit_btn);
 
         getProjectNews(getIntent().getStringExtra("Project_id"));
 
-        newCard = (CardView)findViewById(R.id.details_project_type1_newscard);
-        news_listView=(ListView)findViewById(R.id.details_project_type1_newslist);
-        newsItemArrayList=new ArrayList<>();
+        newCard = (CardView) findViewById(R.id.details_project_type1_newscard);
+        news_listView = (ListView) findViewById(R.id.details_project_type1_newslist);
+        newsItemArrayList = new ArrayList<>();
 
-        try
-        {
+        try {
             title.setText(getIntent().getStringExtra("Title"));
             description.setText(getIntent().getStringExtra("Description"));
             department.setText(getIntent().getStringExtra("Department"));
             city.setText(getIntent().getStringExtra("City"));
             Picasso.get().load(getIntent().getStringExtra("Image_url")).into(imageView);
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
 
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertSubmission_Interested(getIntent().getStringExtra("Project_id"),1);
+                insertSubmission_Interested(getIntent().getStringExtra("Project_id"), 1);
             }
         });
     }
 
-    private void getStatistics(final String project_id)
-    {
-        class GetJSON2 extends AsyncTask<Void,Void,String>
-        {
+  /*  private void getStatistics(final String project_id) {
+        class GetJSON2 extends AsyncTask<Void, Void, String> {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
@@ -111,11 +110,10 @@ public class ProjectType1DetailsActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                Scanner sc=new Scanner(s);
+                Scanner sc = new Scanner(s);
 
-                ArrayList<String> nums=new ArrayList<>();
-                while (sc.hasNext())
-                {
+                ArrayList<String> nums = new ArrayList<>();
+                while (sc.hasNext()) {
                     nums.add(sc.next());
                 }
                 viewed_num.setText(nums.get(0));
@@ -125,12 +123,12 @@ public class ProjectType1DetailsActivity extends AppCompatActivity {
 
             @Override
             protected String doInBackground(Void... params) {
-                HashMap<String,String> args = new HashMap<>();
-                args.put("project_id",project_id);
+                HashMap<String, String> args = new HashMap<>();
+                args.put("project_id", project_id);
                 RequestHandler rh = new RequestHandler();
 
-                String s = rh.sendPostRequest(AppConstants.get_type1_project_statistics,args);
-                Log.v("RESULT",s);
+                //String s = rh.sendPostRequest(AppConstants.get_type1_project_statistics, args);
+                Log.v("RESULT", s);
                 return s;
             }
         }
@@ -138,10 +136,9 @@ public class ProjectType1DetailsActivity extends AppCompatActivity {
         gj.execute();
     }
 
-    private void insertViewed(final String project_id)
-    {
-        class GetJSON2 extends AsyncTask<Void,Void,String>
-        {
+
+    private void insertViewed(final String project_id) {
+        class GetJSON2 extends AsyncTask<Void, Void, String> {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
@@ -152,17 +149,19 @@ public class ProjectType1DetailsActivity extends AppCompatActivity {
                 super.onPostExecute(s);
             }
 
+
+
             @Override
             protected String doInBackground(Void... params) {
-                HashMap<String,String> args = new HashMap<>();
-                SharedPreferences prefs = getSharedPreferences(AppConstants.CURRENT_USER, MODE_PRIVATE);
-                String user_id = prefs.getString("user_id", "0");
+                HashMap<String, String> args = new HashMap<>();
+              //  SharedPreferences prefs = getSharedPreferences(AppConstants.CURRENT_USER, MODE_PRIVATE);
+                //String user_id = prefs.getString("user_id", "0");
 
-                args.put("user_id",user_id);
-                args.put("project_id",project_id);
+                //args.put("user_id", user_id);
+                args.put("project_id", project_id);
                 RequestHandler rh = new RequestHandler();
 
-                String s = rh.sendPostRequest(AppConstants.insert_type1_project_viewed,args);
+               // String s = rh.sendPostRequest(AppConstants.insert_type1_project_viewed, args);
                 return s;
             }
         }
@@ -170,26 +169,27 @@ public class ProjectType1DetailsActivity extends AppCompatActivity {
         gj.execute();
     }
 
-    private void insertSubmission_Interested(final String project_id,final int from)
-    {
+   */
+
+    private void insertSubmission_Interested(final String project_id, final int from) {
         class GetJSON2 extends AsyncTask<Void, Void, String> {
 
             ProgressDialog progressDialog;
+
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                progressDialog = ProgressDialog.show(ProjectType1DetailsActivity.this,"Checking Submission","Please Wait...",false,
+                progressDialog = ProgressDialog.show(ProjectType1DetailsActivity.this, "Checking Submission", "Please Wait...", false,
                         false);
             }
 
             @Override
             protected void onPostExecute(String s) {
-                super.onPostExecute(s);
+               super.onPostExecute(s);
                 progressDialog.dismiss();
-                if (s.equals("0"))
-                {
+                if (s.equals("0")) {
                     Toast.makeText(ProjectType1DetailsActivity.this, "Already Submitted!", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     if (from == 0) {
                         SharedPreferences prefs = getSharedPreferences(AppConstants.FAVOURITES_PROJECT_TYPE1, MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
@@ -204,22 +204,20 @@ public class ProjectType1DetailsActivity extends AppCompatActivity {
 
             @Override
             protected String doInBackground(Void... params) {
-                HashMap<String,String> args = new HashMap<>();
-                SharedPreferences prefs = getSharedPreferences(AppConstants.CURRENT_USER, MODE_PRIVATE);
-                String user_id = prefs.getString("user_id", "0");
+                HashMap<String, String> args = new HashMap<>();
+                // SharedPreferences prefs = getSharedPreferences(AppConstants.CURRENT_USER, MODE_PRIVATE);
+                //  String user_id = prefs.getString("user_id", "0");
 
-                args.put("project_id",project_id);
-                args.put("user_id",user_id);
+                args.put("project_id", project_id);
+                //  args.put("user_id",user_id);
 
                 RequestHandler rh = new RequestHandler();
 
-                String s="";
-                if (from==0)
-                {
-                    s = rh.sendPostRequest(AppConstants.insert_type1_project_intersted,args);
-                }else
-                {
-                    s = rh.sendPostRequest(AppConstants.insert_type1_project_submit,args);
+//                String s = "";
+                if (from == 0) {
+                    s = rh.sendPostRequest(AppConstants.insert_type1_project_intersted, args);
+                } else {
+                    s = rh.sendPostRequest(AppConstants.insert_type1_project_submit, args);
                 }
                 return s;
             }
@@ -240,24 +238,25 @@ public class ProjectType1DetailsActivity extends AppCompatActivity {
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 JSON_NEWS_STRING = s;
-                readNews(JSON_NEWS_STRING);
+                //readNews(JSON_NEWS_STRING);
             }
 
             @Override
             protected String doInBackground(Void... params) {
-                HashMap<String,String> args = new HashMap<>();
-                args.put("project_id",project_id);
+                HashMap<String, String> args = new HashMap<>();
+                args.put("project_id", project_id);
 
                 RequestHandler rh = new RequestHandler();
-                String s = rh.sendPostRequest(AppConstants.get_type1_project_news,args);
+                //  String s = rh.sendPostRequest(args);
+                //return s;
+                // }
                 return s;
             }
+            // GetJSON gj = new GetJSON();
+            // gj.execute();
         }
-        GetJSON gj = new GetJSON();
-        gj.execute();
-    }
 
-    private void readNews(String JSON_NEWS_STRING){
+  /*  private void readNews(String JSON_NEWS_STRING){
         JSONObject jsonObject = null;
         ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String, String>>();
         try {
@@ -286,5 +285,9 @@ public class ProjectType1DetailsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
+   */
+
     }
 }
+

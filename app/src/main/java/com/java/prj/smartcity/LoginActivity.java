@@ -2,6 +2,7 @@ package com.java.prj.smartcity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.content.Intent;
 import android.view.View;
@@ -113,6 +114,8 @@ public class LoginActivity extends AppCompatActivity {
 
                             finishAffinity();
 
+                            SharedPreferences sharedPreferences = LoginActivity.this.getSharedPreferences("user", MODE_PRIVATE);
+                            sharedPreferences.edit().putBoolean("logged", true);
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
                             Toast.makeText(LoginActivity.this, "Sign in Successful", Toast.LENGTH_SHORT).show();

@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".OnboarderActivity"></activity>
+        <activity android:name=".ProjectActivity"></activity>
+        <activity android:name=".OnboarderActivity" />
         <activity android:name=".UserDetailActivity" />
         <activity android:name=".ReportFillActivity" />
         <activity android:name=".ProjectType1DetailsActivity" />

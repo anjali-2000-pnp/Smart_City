@@ -1,6 +1,7 @@
 package com.java.prj.smartcity.Fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.java.prj.smartcity.HelperClasses.AppConstants;
 import com.java.prj.smartcity.HelperClasses.HttpHandler;
 import com.java.prj.smartcity.Items.AlertItem;
+import com.java.prj.smartcity.ProjectType1DetailsActivity;
 import com.java.prj.smartcity.R;
 import com.java.prj.smartcity.RecyclerAdapter.AlertsRecyclerAdapter;
 
@@ -38,18 +40,19 @@ public class AlertFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_alerts, container, false);
+        View view = inflater.inflate(R.layout.fragment_alerts_detail, container, false);
 
         items=new ArrayList<>();
-        recyclerView=(RecyclerView)view.findViewById(R.id.fragment_alerts_recyclerview);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        new getAlertList().execute();
+
+        //recyclerView=(RecyclerView)view.findViewById(R.id.fragment_alerts_recyclerview);
+//        recyclerView.setHasFixedSize(true);
+  //      recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+      //  new getAlertList().execute();
 
         return view;
     }
 
-    private class getAlertList extends AsyncTask<Void,Void,Void>
+/*    private class getAlertList extends AsyncTask<Void,Void,Void>
     {
 
         @Override
@@ -67,7 +70,7 @@ public class AlertFragment extends Fragment {
 
             HttpHandler sh = new HttpHandler();
 
-            String jsonStr = sh.makeServiceCall(AppConstants.get_alerts_list);
+            /*String jsonStr = sh.makeServiceCall(AppConstants.get_alerts_list);
 
             if (jsonStr != null) {
                 try {
@@ -111,20 +114,20 @@ public class AlertFragment extends Fragment {
                     }
                 });
 
-            }
-            return null;
-        }
+            }*/
+          //  return null;
+       // }
 
-        @Override
         protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+          //  super.onPostExecute(aVoid);
 
             if (progressDialog.isShowing())
             {
                 progressDialog.hide();
             }
-            recyclerView.setAdapter(new AlertsRecyclerAdapter(items,getActivity()));
+//            recyclerView.setAdapter(new AlertsRecyclerAdapter(items,getActivity()));
         }
     }
 
-}
+
+

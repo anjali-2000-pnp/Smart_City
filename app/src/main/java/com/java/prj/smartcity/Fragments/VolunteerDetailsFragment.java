@@ -90,25 +90,25 @@ public class VolunteerDetailsFragment extends Fragment {
             args.put("alert_id",getActivity().getIntent().getStringExtra("alert_id"));
             RequestHandler rh = new RequestHandler();
 
-            final String jsonStr = rh.sendPostRequest(AppConstants.get_volunteers,args);
+           // final String jsonStr = rh.sendPostRequest(AppConstants.get_volunteers,args);
 
-            if (jsonStr != null) {
+           // if (jsonStr != null) {
                 try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
+             //       JSONObject jsonObj = new JSONObject(jsonStr);
 
-                    JSONArray feeds = jsonObj.getJSONArray("result");
+               //     JSONArray feeds = jsonObj.getJSONArray("result");
 
-                    for (int i = 0; i < feeds.length(); i++) {
-                        JSONObject c = feeds.getJSONObject(i);
+                 //   for (int i = 0; i < feeds.length(); i++) {
+                   //     JSONObject c = feeds.getJSONObject(i);
 
-                        String name =c.getString("name");
-                        String contact=c.getString("contact");
+                     //   String name =c.getString("name");
+                       // String contact=c.getString("contact");
 
-                        VolunteerItem object=new VolunteerItem(name,contact);
-                        volunteerItems.add(object);
-                    }
+                       // VolunteerItem object=new VolunteerItem(name,contact);
+                       // volunteerItems.add(object);
+                    //}
 
-                } catch (final JSONException e) {
+                } catch (Exception e) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -117,7 +117,7 @@ public class VolunteerDetailsFragment extends Fragment {
                     });
 
                 }
-            } else {
+           /* } else {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -126,6 +126,8 @@ public class VolunteerDetailsFragment extends Fragment {
                 });
 
             }
+
+            */
             return null;
         }
 

@@ -32,8 +32,8 @@ public class AlertsDetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-    TextView title,area,date,time,description,guidelines,helpline,volunteer_disclaimer;
-    ImageView call,add_contact;
+    TextView title, area, date, time, description, guidelines, helpline, volunteer_disclaimer;
+    ImageView call, add_contact;
     Button volunteer_button;
 
     @Override
@@ -42,21 +42,21 @@ public class AlertsDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_alerts_detail, container, false);
 
-        title=(TextView)view.findViewById(R.id.alert_detail_title);
-        area=(TextView)view.findViewById(R.id.alert_detail_area);
-        date=(TextView)view.findViewById(R.id.alert_detail_date);
-        time=(TextView)view.findViewById(R.id.alert_detail_time);
-        description=(TextView)view.findViewById(R.id.alert_detail_description);
-        guidelines=(TextView)view.findViewById(R.id.alert_detail_guidelines);
-        helpline=(TextView)view.findViewById(R.id.alert_detail_helpline);
-        volunteer_disclaimer=(TextView)view.findViewById(R.id.alert_detail_volunteer_disclaimer) ;
+        title = (TextView) view.findViewById(R.id.alert_detail_title);
+        area = (TextView) view.findViewById(R.id.alert_detail_area);
+        date = (TextView) view.findViewById(R.id.alert_detail_date);
+        time = (TextView) view.findViewById(R.id.alert_detail_time);
+        description = (TextView) view.findViewById(R.id.alert_detail_description);
+        guidelines = (TextView) view.findViewById(R.id.alert_detail_guidelines);
+        helpline = (TextView) view.findViewById(R.id.alert_detail_helpline);
+        volunteer_disclaimer = (TextView) view.findViewById(R.id.alert_detail_volunteer_disclaimer);
 
-        call=(ImageView)view.findViewById(R.id.alert_detail_call_img);
-        add_contact=(ImageView)view.findViewById(R.id.alert_detail_add_contact_img);
+        call = (ImageView) view.findViewById(R.id.alert_detail_call_img);
+        add_contact = (ImageView) view.findViewById(R.id.alert_detail_add_contact_img);
 
-        volunteer_button=(Button)view.findViewById(R.id.alert_detail_volunteer_btn);
+        volunteer_button = (Button) view.findViewById(R.id.alert_detail_volunteer_btn);
 
-        title.setText(getActivity().getIntent().getStringExtra("title"));
+     /*   title.setText(getActivity().getIntent().getStringExtra("title"));
         area.setText(getActivity().getIntent().getStringExtra("area"));
         date.setText(getActivity().getIntent().getStringExtra("date"));
         time.setText(getActivity().getIntent().getStringExtra("time"));
@@ -64,6 +64,8 @@ public class AlertsDetailFragment extends Fragment {
         guidelines.setText(getActivity().getIntent().getStringExtra("guidelines"));
         helpline.setText(getActivity().getIntent().getStringExtra("helpline"));
         volunteer_disclaimer.setText(getActivity().getIntent().getStringExtra("disclaimer"));
+
+      */
 
         call.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +80,7 @@ public class AlertsDetailFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_INSERT, ContactsContract.Contacts.CONTENT_URI);
-                intent.putExtra(ContactsContract.Intents.Insert.NAME, getActivity().getIntent().getStringExtra("title")+" Helpline");
+                intent.putExtra(ContactsContract.Intents.Insert.NAME, getActivity().getIntent().getStringExtra("title") + " Helpline");
                 intent.putExtra(ContactsContract.Intents.Insert.PHONE, "" + getActivity().getIntent().getStringExtra("helpline"));
                 getActivity().startActivity(intent);
             }
@@ -94,15 +96,15 @@ public class AlertsDetailFragment extends Fragment {
         return view;
     }
 
-    private void volunteerCheck()
-    {
+    private void volunteerCheck() {
         class GetJSON2 extends AsyncTask<Void, Void, String> {
 
             ProgressDialog progressDialog;
+
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                progressDialog = ProgressDialog.show(getActivity(),"Checking Submission","Please Wait...",false,
+                progressDialog = ProgressDialog.show(getActivity(), "Checking Submission", "Please Wait...", false,
                         false);
             }
 
@@ -112,31 +114,36 @@ public class AlertsDetailFragment extends Fragment {
                 progressDialog.dismiss();
                 if (s.equals("0")) {
                     Toast.makeText(getActivity(), "Already Volunteered!", Toast.LENGTH_SHORT).show();
-                }else if(s.equals("1")){
+                } else if (s.equals("1")) {
                     Toast.makeText(getActivity(), "You're now a volunteer!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             protected String doInBackground(Void... params) {
-                HashMap<String,String> args = new HashMap<>();
+                HashMap<String, String> args = new HashMap<>();
                 SharedPreferences prefs = getActivity().getSharedPreferences(AppConstants.CURRENT_USER, MODE_PRIVATE);
                 String user_id = prefs.getString("user_id", "0");
 
-                args.put("user_id",user_id);
-                args.put("alert_id",getActivity().getIntent().getStringExtra("alert_id"));
+                args.put("user_id", user_id);
+                args.put("alert_id", getActivity().getIntent().getStringExtra("alert_id"));
 
-                Log.v("User_id",user_id);
+                Log.v("User_id", user_id);
                 RequestHandler rh = new RequestHandler();
 
                 String s="";
-                s = rh.sendPostRequest(AppConstants.add_volunteers,args);
+               /* s = rh.sendPostRequest(AppConstants.add_volunteers,args);
                 return s;
             }
         }
         GetJSON2 gj = new GetJSON2();
         gj.execute();
-    }
 
+                 */
+                return s;
+            }
+
+        }
+    }
 }
 

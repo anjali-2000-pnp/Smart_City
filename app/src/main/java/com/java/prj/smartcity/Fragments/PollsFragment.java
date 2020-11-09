@@ -84,27 +84,27 @@ public class PollsFragment extends Fragment {
             args.put("user_id",user_id);
             RequestHandler rh = new RequestHandler();
 
-            final String jsonStr = rh.sendPostRequest(AppConstants.get_poll_questions,args);
+         //   final String jsonStr = rh.sendPostRequest(AppConstants.get_poll_questions,args);
 
-            if (jsonStr != null) {
+           // if (jsonStr != null) {
                 try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
+             //       JSONObject jsonObj = new JSONObject(jsonStr);
 
-                    JSONArray feeds = jsonObj.getJSONArray("result");
+               //     JSONArray feeds = jsonObj.getJSONArray("result");
 
-                    for (int i = 0; i < feeds.length(); i++) {
-                        JSONObject c = feeds.getJSONObject(i);
+                 //   for (int i = 0; i < feeds.length(); i++) {
+                   //     JSONObject c = feeds.getJSONObject(i);
 
-                        String poll_id =c.getString("poll_id");
-                        String question = c.getString("question");
-                        String poll_ans = c.getString("poll_ans");
+                     //   String poll_id =c.getString("poll_id");
+                       // String question = c.getString("question");
+                        //String poll_ans = c.getString("poll_ans");
 
-                        PollsItem object = new PollsItem(poll_id,question,poll_ans);
+                       // PollsItem object = new PollsItem(poll_id,question,poll_ans);
 
-                        items.add(object);
-                    }
+                        //items.add(object);
+                    //}
 
-                } catch (final JSONException e) {
+                } catch (Exception e) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -113,15 +113,15 @@ public class PollsFragment extends Fragment {
                     });
 
                 }
-            } else {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getActivity(),"No Internet Connection",Toast.LENGTH_LONG).show();
-                    }
-                });
+           // } else {
+             //   getActivity().runOnUiThread(new Runnable() {
+                   // @Override
+                   // public void run() {
+                     //   Toast.makeText(getActivity(),"No Internet Connection",Toast.LENGTH_LONG).show();
+                    //}
+                //});
 
-            }
+            //}
             return null;
         }
 

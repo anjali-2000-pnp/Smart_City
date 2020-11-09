@@ -47,7 +47,7 @@ public class RequestHandler { public String sendPostRequest(String requestURL,
         //We are using a method getPostDataString which is defined below
         BufferedWriter writer = new BufferedWriter(
                 new OutputStreamWriter(os, "UTF-8"));
-        writer.write(getPostDataString(postDataParams));
+//        writer.write(getPostDataString(postDataParams));
 
         writer.flush();
         writer.close();
@@ -114,7 +114,7 @@ public class RequestHandler { public String sendPostRequest(String requestURL,
 
             result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
             result.append("=");
-            result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+//            result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
         }
 
         return result.toString();
