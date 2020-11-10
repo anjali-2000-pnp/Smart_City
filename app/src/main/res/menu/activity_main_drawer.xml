@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:id="@+id/nav_view_group1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/nav_projects"
+            android:icon="@drawable/ic_description_black_24dp"
+            android:title="@string/projects" />
+        <item
+            android:id="@+id/nav_alerts"
+            android:icon="@drawable/ic_warning_black_24dp"
+            android:title="Alerts" />
+        <item
+            android:id="@+id/nav_innovation"
+            android:icon="@drawable/ic_flare_black_24dp"
+            android:title="Innovation" />
+    </group>
+
+    <group android:id="@+id/nav_view_group2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_news"
+            android:icon="@drawable/ic_router_black_24dp"
+            android:title="@string/news" />
+        <item
+            android:id="@+id/nav_surveys"
+            android:icon="@drawable/ic_thumbs_up_down_black_24dp"
+            android:title="@string/polls_surveys" />
+        <item
+            android:id="@+id/nav_reporting"
+            android:icon="@drawable/ic_remove_red_eye_black_24dp"
+            android:title="@string/reporting" />
+    </group>
+
+    <item
+        android:id="@+id/nav_myaccount"
+        android:icon="@drawable/ic_person_black_24dp"
+        android:title="My Account" />
+
+</menu>
